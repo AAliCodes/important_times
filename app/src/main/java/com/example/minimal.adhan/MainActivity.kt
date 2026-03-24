@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.lifecycleScope
 import com.example.minimal.adhan.data.DataStoreUserRepository
 import com.example.minimal.adhan.data.UserRepository
@@ -17,6 +18,7 @@ import com.example.minimal.adhan.engine.PrayerTimesEngine
 import com.example.minimal.adhan.ui.DashboardScreen
 import com.example.minimal.adhan.ui.DashboardViewModel
 import com.example.minimal.adhan.ui.DashboardViewModelFactory
+import com.example.minimal.adhan.ui.PrayerWidget
 
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -62,6 +64,7 @@ class MainActivity : ComponentActivity() {
                 if (location != null) {
                     lifecycleScope.launch {
                         userRepository.saveLocation(location.latitude, location.longitude)
+                        PrayerWidget().updateAll(this@MainActivity)
                         Toast.makeText(this@MainActivity, "Location saved!", Toast.LENGTH_SHORT).show()
                     }
                 } else {

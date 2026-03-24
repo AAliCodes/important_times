@@ -1,8 +1,7 @@
-package com.example.adhan.engine
+package com.example.minimal.adhan.engine
 
 import com.batoulapps.adhan.Coordinates
 import com.batoulapps.adhan.data.DateComponents
-import com.example.minimal.adhan.engine.PrayerTimesEngine
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test

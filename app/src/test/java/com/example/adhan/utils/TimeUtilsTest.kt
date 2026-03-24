@@ -1,4 +1,4 @@
-package com.example.adhan.utils
+package com.example.minimal.adhan.utils
 
 import com.example.minimal.adhan.utils.formatToTime
 import org.junit.Assert.assertEquals
