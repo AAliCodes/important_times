@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <!-- Internet access for location services -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Foreground service for location (if needed) -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".PrayerTimesApplication"
@@ -21,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PrayerTimes">
 
-        <!-- Settings Activity -->
+        <!-- Settings Activity (launcher entry point) -->
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="true"

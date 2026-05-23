@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Simple crescent moon shape representing Islamic prayer times -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,20 C35.2,20 20,35.2 20,54 C20,72.8 35.2,88 54,88
+                          C62,88 69.4,85.2 75.2,80.4 C68.4,79.2 62.4,75.6 58,70.4
+                          C53.6,65.2 51.2,58.8 51.2,52 C51.2,45.2 53.6,38.8 58,33.6
+                          C62.4,28.4 68.4,24.8 75.2,23.6 C69.4,20.8 62,20 54,20Z" />
+</vector>

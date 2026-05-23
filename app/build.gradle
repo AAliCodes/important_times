@@ -83,8 +83,8 @@ dependencies {
     // Google Play Services Location (FusedLocationProviderClient)
     implementation 'com.google.android.gms:play-services-location:21.3.0'
 
-    // Adhan-Java (Islamic prayer time calculation)
-    implementation 'com.batoulapps.adhan:adhan:2.0.3'
+    // Adhan-Java (Islamic prayer time calculation) — v1.2.1 is the latest stable JVM release
+    implementation 'com.batoulapps.adhan:adhan:1.2.1'
 
     // DataStore (for GlanceStateDefinition)
     implementation 'androidx.datastore:datastore-preferences:1.1.1'
