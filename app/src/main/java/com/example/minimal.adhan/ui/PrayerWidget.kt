@@ -38,7 +38,7 @@ class PrayerWidget : GlanceAppWidget() {
         val userRepository = DataStoreUserRepository(context)
         val engine = PrayerTimesEngine()
         
-        // Fetch location and user's preferred Madhab
+        // Fetch location and user's preferred Madhab from DataStore
         val coordinates = userRepository.getLocation().first()
         val madhab = userRepository.getMadhab().first()
 

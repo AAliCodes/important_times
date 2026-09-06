@@ -3,6 +3,8 @@ package com.example.minimal.adhan.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,11 +18,12 @@ import com.batoulapps.adhan.Madhab
 fun DashboardScreen(
     uiState: DashboardUiState,
     onRequestLocation: () -> Unit,
-    onToggleMadhab: () -> Unit
+    onToggleMadhab: () -> Unit,
+    onRefreshLocation: () -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(32.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 32.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             when {
@@ -42,18 +45,23 @@ fun DashboardScreen(
                 }
                 else -> {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text("Today", fontSize = 28.sp, fontWeight = FontWeight.Light)
                         
-                        // Madhab Toggle Button
-                        TextButton(onClick = onToggleMadhab) {
-                            Text(
-                                text = if (uiState.madhab == Madhab.HANAFI) "Hanafi" else "Standard (Shafi)",
-                                style = MaterialTheme.typography.labelLarge
-                            )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            IconButton(onClick = onRefreshLocation) {
+                                Icon(Icons.Default.Refresh, contentDescription = "Refresh Location")
+                            }
+                            // Madhab Toggle Button
+                            TextButton(onClick = onToggleMadhab) {
+                                Text(
+                                    text = if (uiState.madhab == Madhab.HANAFI) "Hanafi" else "Standard",
+                                    style = MaterialTheme.typography.labelLarge
+                                )
+                            }
                         }
                     }
                     
