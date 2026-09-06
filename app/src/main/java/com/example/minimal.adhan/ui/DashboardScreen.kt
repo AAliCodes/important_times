@@ -10,29 +10,74 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.batoulapps.adhan.Madhab
 
 @Composable
-fun DashboardScreen(uiState: DashboardUiState, onRequestLocation: () -> Unit) {
+fun DashboardScreen(
+    uiState: DashboardUiState,
+    onRequestLocation: () -> Unit,
+    onToggleMadhab: () -> Unit
+) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
             modifier = Modifier.fillMaxSize().padding(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             when {
-                uiState.isLoading -> CircularProgressIndicator()
+                uiState.isLoading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
                 !uiState.hasLocation -> {
-                    Text("Location required to calculate precise prayer times.", style = MaterialTheme.typography.bodyLarge)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = onRequestLocation) { Text("Enable Location") }
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text("Location required to calculate precise prayer times.", style = MaterialTheme.typography.bodyLarge)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(onClick = onRequestLocation) { Text("Enable Location") }
+                    }
                 }
                 else -> {
-                    Text("Today", fontSize = 28.sp, fontWeight = FontWeight.Light, modifier = Modifier.padding(bottom = 32.dp))
-                    LazyColumn(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Today", fontSize = 28.sp, fontWeight = FontWeight.Light)
+                        
+                        // Madhab Toggle Button
+                        TextButton(onClick = onToggleMadhab) {
+                            Text(
+                                text = if (uiState.madhab == Madhab.HANAFI) "Hanafi" else "Standard (Shafi)",
+                                style = MaterialTheme.typography.labelLarge
+                            )
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(32.dp))
+                    
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
                         items(uiState.prayerTimes) { prayer ->
-                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                Text(prayer.first, fontSize = 20.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
-                                Text(prayer.second, fontSize = 20.sp, fontWeight = FontWeight.Medium)
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    prayer.first,
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                                )
+                                Text(
+                                    prayer.second,
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
                             }
                         }
                     }

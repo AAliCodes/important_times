@@ -3,6 +3,7 @@ package com.example.minimal.adhan.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.batoulapps.adhan.Madhab
 import com.batoulapps.adhan.data.DateComponents
 import com.example.minimal.adhan.data.UserRepository
 import com.example.minimal.adhan.utils.formatToTime
@@ -12,12 +13,14 @@ import com.example.minimal.adhan.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.util.Date
 
 data class DashboardUiState(
     val isLoading: Boolean = true,
     val hasLocation: Boolean = false,
+    val madhab: Madhab = Madhab.SHAFI,
     val prayerTimes: List<Pair<String, String>> = emptyList()
 )
 
@@ -28,14 +31,20 @@ class DashboardViewModel(
     private val _uiState = MutableStateFlow(DashboardUiState())
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
-    init { loadDailyPrayers() }
+    init {
+        loadData()
+    }
 
-    private fun loadDailyPrayers() {
+    private fun loadData() {
         viewModelScope.launch {
-            userRepository.getLocation().collect { coordinates ->
+            // Combine location and madhab flows to update UI whenever either changes
+            combine(
+                userRepository.getLocation(),
+                userRepository.getMadhab()
+            ) { coordinates, madhab ->
                 if (coordinates != null) {
                     val times = engine.calculatePrayerTimes(
-                        coordinates.latitude, coordinates.longitude, DateComponents.from(Date())
+                        coordinates.latitude, coordinates.longitude, DateComponents.from(Date()), madhab
                     )
                     val formattedTimes = listOf(
                         "Fajr" to times.fajr.formatToTime(),
@@ -45,11 +54,21 @@ class DashboardViewModel(
                         "Maghrib" to times.maghrib.formatToTime(),
                         "Isha" to times.isha.formatToTime()
                     )
-                    _uiState.value = DashboardUiState(false, true, formattedTimes)
+                    DashboardUiState(false, true, madhab, formattedTimes)
                 } else {
-                    _uiState.value = DashboardUiState(false, false)
+                    DashboardUiState(false, false, madhab)
                 }
+            }.collect { state ->
+                _uiState.value = state
             }
+        }
+    }
+
+    fun toggleMadhab() {
+        viewModelScope.launch {
+            val current = _uiState.value.madhab
+            val next = if (current == Madhab.SHAFI) Madhab.HANAFI else Madhab.SHAFI
+            userRepository.saveMadhab(next)
         }
     }
 }

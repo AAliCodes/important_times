@@ -7,10 +7,10 @@ import com.batoulapps.adhan.PrayerTimes
 import com.batoulapps.adhan.data.DateComponents
 
 class PrayerTimesEngine {
-    fun calculatePrayerTimes(latitude: Double, longitude: Double, date: DateComponents): PrayerTimes {
+    fun calculatePrayerTimes(latitude: Double, longitude: Double, date: DateComponents, madhab: Madhab): PrayerTimes {
         val coordinates = Coordinates(latitude, longitude)
         val parameters = CalculationMethod.MUSLIM_WORLD_LEAGUE.parameters
-        parameters.madhab = Madhab.SHAFI
+        parameters.madhab = madhab;
         return PrayerTimes(coordinates, date, parameters)
     }
 }

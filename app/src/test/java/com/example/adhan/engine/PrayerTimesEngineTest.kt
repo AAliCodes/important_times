@@ -1,6 +1,7 @@
 package com.example.minimal.adhan.engine
 
 import com.batoulapps.adhan.Coordinates
+import com.batoulapps.adhan.Madhab
 import com.batoulapps.adhan.data.DateComponents
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -17,7 +18,8 @@ class PrayerTimesEngineTest {
         val prayerTimes = engine.calculatePrayerTimes(
             latitude = coordinates.latitude,
             longitude = coordinates.longitude,
-            date = fixedDate
+            date = fixedDate,
+            Madhab.HANAFI
         )
 
         assertNotNull("Fajr time should not be null", prayerTimes.fajr)
